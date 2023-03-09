@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fe2855e0-7c31-4c19-aa54-cd133aa3b6ee"
+      }
+    },
+    "owner": "caladinqvothe"
   }
 }
