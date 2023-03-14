@@ -1,131 +1,13 @@
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-
-
-
-  // const handleUpload = async () => {
-  //   const formData = new FormData();
-  //   formData.append('video', {
-  //     uri: videoUri,
-  //     type: 'video/mp4',
-  //     name: 'video.mp4',
-  //   });
-  
-  //   const uploadProgressListener = (progressEvent) => {
-  //     const progress =
-  //       progressEvent.loaded / progressEvent.total;
-  //     setUploadProgress(progress);
-  //   };
-  
-  //   try {
-  //     const response = await FileSystem.uploadAsync(
-  //       'https://example.com/upload',
-  //       formData,
-  //       {
-  //         httpMethod: 'POST',
-  //         headers: {
-  //           Accept: 'application/json',
-  //           'Content-Type': 'multipart/form-data',
-  //         },
-  //         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-  //         onUploadProgress: uploadProgressListener,
-  //       }
-  //     );
-  
-  //     console.log('Upload success:', response);
-  //   } catch (error) {
-  //     console.log('Upload failed:', error);
-  //   }
-  // };
-
-  // return (
-  //   <View style={{ flex: 1 }}>
-  //     <Camera style={{ flex: 1 }} type={cameraType} ref={cameraRef}>
-  //       <TouchableOpacity
-  //         style={{
-  //           alignSelf: 'flex-end',
-  //           alignItems: 'center',
-  //           backgroundColor: 'transparent',
-  //           marginBottom: 20,
-  //         }}
-  //         onPress={() => {
-  //           setCameraType(
-  //             cameraType === Camera.Constants.Type.back
-  //               ? Camera.Constants.Type.front
-  //               : Camera.Constants.Type.back
-  //           );
-  //         }}>
-  //         <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-  //       </TouchableOpacity>
-  //     </Camera>
-  //     <TouchableOpacity
-  //       style={{
-  //         alignSelf: 'center',
-  //         alignItems: 'center',
-  //         backgroundColor: 'white',
-  //         padding: 10,
-  //         borderRadius: 5,
-  //         marginBottom: 20,
-  //       }}
-  //       onPress={handleRecordButton}>
-  //       <Text>{recording ? 'Stop' : 'Record'}</Text>
-  //     </TouchableOpacity>
-  //     {videoUri && (
-  //       <TouchableOpacity
-  //         style={{
-  //           alignSelf: 'center',
-  //           alignItems: 'center',
-  //           backgroundColor: 'white',
-  //           padding: 10,
-  //           borderRadius: 5,
-  //           marginBottom: 20,
-  //         }}
-  //         onPress={async () => {
-  //           const formData = new FormData();
-  //           formData.append('video', {
-  //             uri: videoUri,
-  //             type: 'video/mp4',
-  //             name: 'video.mp4',
-  //           });
-  
-  //           try {
-  //             const response = await FileSystem.uploadAsync(
-  //               'https://example.com/upload',
-  //               formData,
-  //               {
-  //                 httpMethod: 'POST',
-  //                 headers: {
-  //                   Accept: 'application/json',
-  //                   'Content-Type': 'multipart/form-data',
-  //                 },
-  //                 uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-  //                 onUploadProgress: (progressEvent) => {
-  //                   const progress = progressEvent.loaded / progressEvent.total;
-  //                   setUploadProgress(progress);
-  //                 },
-  //               }
-  //             );
-  //             console.log('Upload success:', response);
-  //           } catch (error) {
-  //             console.log('Upload failed:', error);
-  //           }
-  //         }}>
-  //         <Text>Upload Video</Text>
-  //       </TouchableOpacity>
-  //     )}
-  //     {uploadProgress > 0 && <ProgressBar progress={uploadProgress} />}
-  //   </View>
-  // );
-  import * as React from 'react';
-  import {NavigationContainer} from '@react-navigation/native';
-  import {createNativeStackNavigator} from '@react-navigation/native-stack';
-  
-  
 import CharacterList from "./CharacterList";
 import * as notfis from "expo-notifications";
-import * as FileSystem from 'expo-file-system';
-import { CameraPermission } from 'expo-camera/build/Camera.types';
+import * as FileSystem from "expo-file-system";
+import { CameraPermission } from "expo-camera/build/Camera.types";
 // import React, { useState, useRef, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import {
   StyleSheet,
@@ -133,11 +15,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView, Button, StatusBar,ProgressBarAndroid,
+  SafeAreaView,
+  Button,
+  StatusBar,
+  ProgressBarAndroid,
 } from "react-native";
 import { Camera } from "expo-camera";
-import { Video } from 'expo-av';
-
+import { Video } from "expo-av";
 
 const Stack = createNativeStackNavigator();
 
@@ -145,25 +29,26 @@ const WINDOW_HEIGHT = Dimensions.get("window").height;
 const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
 const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
 export default function App() {
-  const [hasPermission, setHasPermission] =  React.useState(null);
-  const [cameraType, setCameraType] =  React.useState(Camera.Constants.Type.back);
-  const [isPreview, setIsPreview] =  React.useState(false);
-  const [isCameraReady, setIsCameraReady] =  React.useState(false);
-  const [isVideoRecording, setIsVideoRecording] =  React.useState(false);
-  const [videoSource, setVideoSource] =  React.useState(null);
-  const cameraRef =  React.useRef();
-  const [expoPushToken, setExpoPushToken] = React.useState('');
+  const [hasPermission, setHasPermission] = React.useState(null);
+  const [cameraType, setCameraType] = React.useState(
+    Camera.Constants.Type.back
+  );
+  const [isPreview, setIsPreview] = React.useState(false);
+  const [isCameraReady, setIsCameraReady] = React.useState(false);
+  const [isVideoRecording, setIsVideoRecording] = React.useState(false);
+  const [videoSource, setVideoSource] = React.useState(null);
+  const cameraRef = React.useRef();
+  const [expoPushToken, setExpoPushToken] = React.useState("");
   const [notification, setNotification] = React.useState(false);
   const notificationListener = React.useRef();
   const responseListener = React.useRef();
   const [type, setType] = React.useState(Camera.Constants.Type.back);
-  
-  
+
   const [isRecording, setIsRecording] = React.useState(false);
   const [uploadProgress, setUploadProgress] = React.useState(0);
-  
+
   const handleRecordVideo = async () => {
-    if (isRecording) {
+    if (isRecording && cameraRef.current) {
       cameraRef.current.stopRecording();
       setIsRecording(false);
       return;
@@ -171,59 +56,77 @@ export default function App() {
 
     try {
       const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-
+      setHasPermission(status === "granted");
+  
       if (hasPermission === null) {
         return null;
       }
-
+  
       if (hasPermission === false) {
         return <Text>No access to camera</Text>;
       }
-
+  
       setIsRecording(true);
-      const recording = await cameraRef.current.recordAsync({ quality: '720p' });
-      const data = new FormData();
-      data.append('video', {
-        uri: recording.uri,
-        type: 'video/mp4',
-        name: 'video.mp4',
+      const recording = await cameraRef.current.recordAsync({
+        quality: "720p",
       });
-      const response = await axios.post('https://mvai.qa.onroadvantage.com/api/analyse', data, {
-        onUploadProgress: (progressEvent) => {
-          const progress = (progressEvent.loaded / progressEvent.total) * 100;
-          setUploadProgress(progress);
-        },
+      const fileUri = recording.uri;
+      console.log("file "+fileUri)
+      const formData = new FormData();
+      formData.append("video", {
+        uri: fileUri,
+        type: "video/mp4",
+        name: "video.mp4",
       });
-      console.log(response.data);
+  
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://mvai.qa.onroadvantage.com/api/analyse");
+  
+      xhr.upload.addEventListener("progress", (event) => {
+        const progress = (event.loaded / event.total) * 100;
+        setUploadProgress(progress);
+      });
+  
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else if (xhr.readyState === 4 && xhr.status !== 200) {
+          console.log("Error uploading file");
+        }
+      };
+  
+      xhr.send(formData);
     } catch (error) {
       console.log(error);
     }
   };
 
   React.useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
 
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    notificationListener.current = notfis.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification);
+      }
+    );
 
-    notificationListener.current = notfis.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = notfis.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+    responseListener.current = notfis.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
 
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();      
-   
+      setHasPermission(status === "granted");
+    })();
+
     return () => {
       notfis.removeNotificationSubscription(notificationListener.current);
       notfis.removeNotificationSubscription(responseListener.current);
-
     };
-
   }, []);
 
   notfis.setNotificationHandler({
@@ -233,55 +136,55 @@ export default function App() {
       shouldSetBadge: false,
     }),
   });
-  
+
   async function sendPushNotification(expoPushToken) {
     const message = {
       to: expoPushToken,
-      sound: 'default',
-      title: 'ViewMetricsNotification Title',
-      body: 'ViewMetricsNotification body.',
-      data: { someData: 'goes here. Check notification bar' },
+      sound: "default",
+      title: "ViewMetricsNotification Title",
+      body: "ViewMetricsNotification body.",
+      data: { someData: "goes here. Check notification bar" },
     };
-  
-    await fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
+
+    await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Accept-encoding': 'gzip, deflate',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Accept-encoding": "gzip, deflate",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(message),
     });
   }
-  
+
   async function registerForPushNotificationsAsync() {
     let token;
-    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+    if (Platform.OS === "android" || Platform.OS === "ios") {
       const { status: existingStatus } = await notfis.getPermissionsAsync();
       let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
+      if (existingStatus !== "granted") {
         const { status } = await notfis.requestPermissionsAsync();
         finalStatus = status;
       }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
         return;
       }
       token = (await notfis.getExpoPushTokenAsync()).data;
       console.log(token);
     } else {
-      alert('Must use physical device for Push Notifications');
+      alert("Must use physical device for Push Notifications");
     }
-  
-    if (Platform.OS === 'android') {
-      notfis.setNotificationChannelAsync('default', {
-        name: 'default',
+
+    if (Platform.OS === "android") {
+      notfis.setNotificationChannelAsync("default", {
+        name: "default",
         importance: notfis.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+        lightColor: "#FF231F7C",
       });
     }
-  
+
     return token;
   }
 
@@ -323,7 +226,7 @@ export default function App() {
     if (cameraRef.current) {
       cameraRef.current.stopRecording();
       setIsPreview(false);
-      setIsVideoRecording(false);      
+      setIsVideoRecording(false);
     }
   };
   const switchCamera = () => {
@@ -384,81 +287,104 @@ export default function App() {
     return <Text style={styles.text}>No access to camera</Text>;
   }
 
-  function CameraScreen  ({navigation, route})  {
+  function CameraScreen({ navigation, route }) {
     return (
-    <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
-        <View style={{ flex: 1, backgroundColor: 'transparent', flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={{ flex: 0.1, alignSelf: 'flex-end', alignItems: 'center' }}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}>
-            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
+      <View style={{ flex: 1 }}>
+        <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "transparent",
+              flexDirection: "row",
+            }}
+          >
+            <TouchableOpacity
+              style={{ flex: 0.1, alignSelf: "flex-end", alignItems: "center" }}
+              onPress={() => {
+                setType(
+                  type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back
+                );
+              }}
+            >
+              <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
+                {" "}
+                Flip{" "}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Camera>
+        {isRecording ? (
+          <TouchableOpacity onPress={handleRecordVideo}>
+            <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
+              Stop Recording
+            </Text>
           </TouchableOpacity>
-        </View>
-      </Camera>
-      {isRecording ? (
-        <TouchableOpacity onPress={handleRecordVideo}>
-          <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>Stop Recording</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={handleRecordVideo}>
-          <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>Record Video</Text>
-        </TouchableOpacity>
-      )}
-      <ProgressBarAndroid styleAttr="Horizontal" indeterminate={false} progress={uploadProgress / 100} />
-    </View>
-  );
-};
+        ) : (
+          <TouchableOpacity onPress={handleRecordVideo}>
+            <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
+              Record Video
+            </Text>
+          </TouchableOpacity>
+        )}
+        <ProgressBarAndroid
+          styleAttr="Horizontal"
+          indeterminate={false}
+          progress={uploadProgress / 100}
+        />
+      </View>
+    );
+  }
 
-  function RickAndMortyAndNotifications ({navigation})  {
+  function RickAndMortyAndNotifications({ navigation }) {
     return (
       <SafeAreaView>
         <Text>Your expo push token: {expoPushToken}</Text>
         <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+          <Text>
+            Title: {notification && notification.request.content.title}{" "}
+          </Text>
+          <Text>Body: {notification && notification.request.content.body}</Text>
+          <Text>
+            Data:{" "}
+            {notification && JSON.stringify(notification.request.content.data)}
+          </Text>
         </View>
         <Button
-        title="Press to Send Notification"
-        onPress={async () => {
-          await sendPushNotification(expoPushToken);
-        }}
-      />
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Push Notification Example</Text>
-      </View>
-      <Button
-        title="Go To CameraScreen"
-        onPress={() =>
-          navigation.navigate('CameraScreen', {name: 'CameraScreen'})
-        }
+          title="Press to Send Notification"
+          onPress={async () => {
+            await sendPushNotification(expoPushToken);
+          }}
         />
-      <StatusBar barStyle="dark-content" />
-      
-        <CharacterList />        
-                    
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>Push Notification Example</Text>
+        </View>
+        <Button
+          title="Go To CameraScreen"
+          onPress={() =>
+            navigation.navigate("CameraScreen", { name: "CameraScreen" })
+          }
+        />
+        <StatusBar barStyle="dark-content" />
+
+        <CharacterList />
       </SafeAreaView>
-      
     );
-  };
+  }
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
           name="RickAndMortyAndNotifications"
-          component={RickAndMortyAndNotifications}          
+          component={RickAndMortyAndNotifications}
         />
         <Stack.Screen name="CameraScreen" component={CameraScreen} />
       </Stack.Navigator>
-    </NavigationContainer>    
+    </NavigationContainer>
   );
 }
 const styles = StyleSheet.create({
